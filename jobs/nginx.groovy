@@ -13,7 +13,4 @@ pipelineJob('example-scm-job') {
             scriptPath('Jenkinsfile')
         }
     }
-    logRotator {
-        numToKeep(1)
-    }
 }

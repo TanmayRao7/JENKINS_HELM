@@ -440,15 +440,32 @@ controller:
 
   # Used to approve a list of groovy functions in pipelines used the script-security plugin. Can be viewed under /scriptApproval
   # -- List of groovy functions to approve
-  scriptApproval: []
-  #  - "method groovy.json.JsonSlurperClassic parseText java.lang.String"
-  #  - "new groovy.json.JsonSlurperClassic"
+  # scriptApproval: []
+  # #  - "method groovy.json.JsonSlurperClassic parseText java.lang.String"
+  # #  - "new groovy.json.JsonSlurperClassic"
+
+
 
   # -- Map of groovy init scripts to be executed during Jenkins controller start
-  initScripts: {}
-  #  test: |-
-  #    print 'adding global pipeline libraries, register properties, bootstrap jobs...'
-  # -- Name of the existing ConfigMap that contains init scripts
+  initScripts:
+    auto-approve-scripts.groovy: |
+        import jenkins.model.Jenkins
+        import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval
+
+        def signaturesToApprove = [
+          "method java.lang.String trim",
+          "staticMethod java.lang.Math max int int"
+          // Add more method signatures here as needed
+        ]
+
+        def scriptApproval = Jenkins.instance.getExtensionList(ScriptApproval.class).get(0)
+        signaturesToApprove.each { signature ->
+          if (!scriptApproval.approvedSignatures.contains(signature)) {
+            scriptApproval.approveSignature(signature)
+            println "Approved signature: ${signature}"
+          }
+        }
+
   initConfigMap:
 
   # 'name' is a name of an existing secret in the same namespace as jenkins,
