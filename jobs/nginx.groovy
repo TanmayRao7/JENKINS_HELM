@@ -1,5 +1,5 @@
-pipelineJob('example-scm-job') {
-    description('Pipeline job configured using Job DSL and SCM')
+pipelineJob('NGINX') {
+    description('Pipeline for nginx helm chart')
     definition {
         cpsScm {
             scm {
@@ -7,7 +7,7 @@ pipelineJob('example-scm-job') {
                     remote {
                         url('https://github.com/TanmayRao7/nginx-helm.git') 
                     }
-                    branch('main') 
+                    branch('master') 
                 }
             }
             scriptPath('Jenkinsfile')
