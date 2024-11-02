@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jenkins                 # Name of your Argo CD application
+  namespace: argocd                 # Namespace where Argo CD is installed
+spec:
+  project: default                  # Argo CD project (default project)
+  source:
+    repoURL: 'https://github.com/TanmayRao7/JENKINS_HELM.git'   # Git repository containing the Helm chart
+    targetRevision: main                               # Branch, tag, or commit
+    path: '*'                            # Path to the Helm chart in the repository
+    helm:
+      valueFiles:
+        - values.yaml                                  # Values file for the Helm chart
+  destination:
+    server: 'https://kubernetes.default.svc'           # Kubernetes API server
+    namespace: default                            # Namespace for deployment
+  syncPolicy:
+    automated:                                         # Enable automatic syncing
+      prune: true                                      # Prune resources that are no longer in the chart
+      selfHeal: true                                   # Automatically sync out-of-sync resources
