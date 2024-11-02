@@ -524,7 +524,7 @@ controller:
                 scm {
                   git {
                     remote {
-                      url('https://github.com/TanmayRao7/nginx-helm.git')
+                      url('https://github.com/TanmayRao7/JENKINS_HELM.git')
                       credentials('github-credentials')
                     }
                     branch('master')
