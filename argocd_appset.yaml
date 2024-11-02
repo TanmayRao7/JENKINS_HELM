@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/TanmayRao7/JENKINS_HELM.git'   # Git repository containing the Helm chart
     targetRevision: main                               # Branch, tag, or commit
-    path: '*'                            # Path to the Helm chart in the repository
+    path: '.'                            # Path to the Helm chart in the repository
     helm:
       valueFiles:
         - values.yaml                                  # Values file for the Helm chart

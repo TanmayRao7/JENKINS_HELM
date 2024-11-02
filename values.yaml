@@ -524,27 +524,22 @@ controller:
                 scm {
                   git {
                     remote {
-                      url('https://github.com/TanmayRao7/JENKINS_HELM.git')
+                      url('https://github.com/your-org/job-dsl-scripts.git')
                       credentials('github-credentials')
                     }
-                    branch('master')
+                    branch('main')
                   }
                 }
                 triggers {
                   scm('H/15 * * * *')
                 }
-                definition {
-                  cpsScm {
-                    scm {
-                      git {
-                        remote {
-                          url('https://github.com/TanmayRao7/nginx-helm.git')
-                          credentials('github-credentials')
-                        }
-                        branch('master')
-                      }
-                    }
-                    scriptPath('Jenkinsfile')
+                steps {
+                  dsl {
+                    external('jobs/**/*.groovy')
+                    removeAction('DELETE')
+                    removeViewAction('DELETE')
+                    ignoreExisting(false)
+                    additionalClasspath('src/main/groovy')
                   }
                 }
               } 
