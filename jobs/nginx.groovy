@@ -1,16 +1,20 @@
-pipelineJob('NGINX') {
-    description('Pipeline for nginx helm chart')
-    definition {
-        cpsScm {
-            scm {
-                git {
-                    remote {
-                        url('https://github.com/TanmayRao7/nginx-helm.git') 
+def jobName = ['NGINX-1','NGINX-2','NGINX-3']
+
+for (i in jobName) {
+    pipelineJob('${i}') {
+        description('Pipeline for nginx helm chart')
+        definition {
+            cpsScm {
+                scm {
+                    git {
+                        remote {
+                            url('https://github.com/TanmayRao7/nginx-helm.git') 
+                        }
+                        branch('master') 
                     }
-                    branch('master') 
                 }
+                scriptPath('Jenkinsfile')
             }
-            scriptPath('Jenkinsfile')
         }
     }
 }
