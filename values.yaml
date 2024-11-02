@@ -449,22 +449,58 @@ controller:
   # -- Map of groovy init scripts to be executed during Jenkins controller start
   initScripts:
     auto-approve-scripts.groovy: |
-        import jenkins.model.Jenkins
-        import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval
+        import org.jenkinsci.plugins.scriptsecurity.scripts.*
+          
+        def method = "something"
+        def signature = "something"
 
-        def signaturesToApprove = [
-          "method java.lang.String trim",
-          "staticMethod java.lang.Math max int int"
-          // Add more method signatures here as needed
-        ]
+        ScriptApproval sa = ScriptApproval.get();
 
-        def scriptApproval = Jenkins.instance.getExtensionList(ScriptApproval.class).get(0)
-        signaturesToApprove.each { signature ->
-          if (!scriptApproval.approvedSignatures.contains(signature)) {
-            scriptApproval.approveSignature(signature)
-            println "Approved signature: ${signature}"
-          }
+        //list pending approvals
+        for (ScriptApproval.PendingScript pending : sa.getPendingScripts()) {
+                println "Pending Approved : " + pending.script
         }
+
+        for (ScriptApproval.PendingSignature pending : sa.getPendingSignatures()) {
+                println "Pending Approved : " + pending.signature
+        }  
+
+        // approve scripts
+        for (ScriptApproval.PendingScript pending : sa.getPendingScripts()) {
+          if (pending.script.equals(method)) {
+                sa.approveScript(pending.getHash());
+              println "Approved : " + pending.script
+              }
+        }
+
+        // approve signatures
+        for (ScriptApproval.PendingSignature pending : sa.getPendingSignatures()) {
+          if (pending.equals(signature)) {
+                sa.approveSignature(pending.signature);
+              println "Approved : " + pending.signature
+              }
+        }
+
+        //Add a signature to the list
+        signature = "staticMethod org.codehaus.groovy.runtime.DefaultGroovyMethods getText java.net.URL"
+
+        ScriptApproval.PendingSignature s = new ScriptApproval.PendingSignature(signature, false, ApprovalContext.create())
+        sa.getPendingSignatures().add(s)
+
+        //approbe a full script
+        import org.jenkinsci.plugins.scriptsecurity.scripts.*
+        import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage
+
+        final ScriptApproval sa = ScriptApproval.get();
+
+        String script = '''stage ('test'){
+            java.net.URL url = new java.net.URL('http://site.com')
+            url.getText()
+        }'''
+
+        ScriptApproval.PendingScript s = new ScriptApproval.PendingScript(script, GroovyLanguage.get(), ApprovalContext.create())
+
+        sa.approveScript(s.getHash())
 
   initConfigMap:
 
