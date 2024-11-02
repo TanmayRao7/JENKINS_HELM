@@ -1,8 +1,7 @@
 def jobName = ['NGINX-1','NGINX-2','NGINX-3']
-def i = ''
 
-for (i in jobName) {
-    pipelineJob(i) {
+for (name in jobName) {
+    pipelineJob(name) {
         description('Pipeline for nginx helm chart')
         definition {
             cpsScm {
