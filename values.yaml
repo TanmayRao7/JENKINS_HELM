@@ -520,6 +520,11 @@ controller:
     # - https://acme.org/jenkins.yaml
     # -- List of Jenkins Config as Code scripts
     configScripts:
+      pipeline-approval: |
+        unclassified:
+          approvals:
+            - approved: "true"
+            - scriptApproval: "*"
       seed-job: |
         jobs:
           - script: >
