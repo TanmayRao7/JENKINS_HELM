@@ -36,5 +36,16 @@ RUN if [ "$ARCH" = "x86_64" ]; then \
     fi && \
     chmod +x /usr/local/bin/yq
 
+# Install Jenkins CLI
+RUN curl -o /usr/local/bin/jenkins-cli.jar http://localhost:8080/jnlpJars/jenkins-cli.jar
+
+# Install Jenkins Plugins
+RUN jenkins-plugin-cli --plugins \
+    credentials \
+    kubernetes-cli \
+    pipeline-stage-view \
+    workflow-aggregator \
+    git
+
 # Switch back to the Jenkins user
 USER jenkins
