@@ -15,5 +15,26 @@ RUN ARCH=$(uname -m) && \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin/
 
+# Install ArgoCD CLI
+RUN if [ "$ARCH" = "x86_64" ]; then \
+        curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64"; \
+    elif [ "$ARCH" = "aarch64" ]; then \
+        curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-arm64"; \
+    else \
+        echo "Unsupported architecture for ArgoCD CLI: $ARCH" && exit 1; \
+    fi && \
+    chmod +x argocd && \
+    mv argocd /usr/local/bin/
+
+# Install yq
+RUN if [ "$ARCH" = "x86_64" ]; then \
+        curl -sSL -o /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64"; \
+    elif [ "$ARCH" = "aarch64" ]; then \
+        curl -sSL -o /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_arm64"; \
+    else \
+        echo "Unsupported architecture for yq: $ARCH" && exit 1; \
+    fi && \
+    chmod +x /usr/local/bin/yq
+
 # Switch back to the Jenkins user
 USER jenkins
