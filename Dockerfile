@@ -15,19 +15,20 @@ RUN ARCH=$(uname -m) && \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin/
 
-# Install ArgoCD CLI
-RUN if [ "$ARCH" = "x86_64" ]; then \
-        curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64"; \
+# Install ArgoCD CLI based on system architecture
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then \
+        curl -sSL -o /usr/local/bin/argocd "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64"; \
     elif [ "$ARCH" = "aarch64" ]; then \
-        curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-arm64"; \
+        curl -sSL -o /usr/local/bin/argocd "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-arm64"; \
     else \
         echo "Unsupported architecture for ArgoCD CLI: $ARCH" && exit 1; \
     fi && \
-    chmod +x argocd && \
-    mv argocd /usr/local/bin/
+    chmod +x /usr/local/bin/argocd
 
-# Install yq
-RUN if [ "$ARCH" = "x86_64" ]; then \
+# Install yq based on system architecture
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then \
         curl -sSL -o /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64"; \
     elif [ "$ARCH" = "aarch64" ]; then \
         curl -sSL -o /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_arm64"; \
@@ -37,7 +38,7 @@ RUN if [ "$ARCH" = "x86_64" ]; then \
     chmod +x /usr/local/bin/yq
 
 # Install Jenkins CLI
-RUN curl -o /usr/local/bin/jenkins-cli.jar http://localhost:8080/jnlpJars/jenkins-cli.jar
+RUN curl -sSL -o /usr/local/bin/jenkins-cli.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/cli/latest/cli-latest.jar
 
 # Install Jenkins Plugins
 RUN jenkins-plugin-cli --plugins \
@@ -45,7 +46,8 @@ RUN jenkins-plugin-cli --plugins \
     kubernetes-cli \
     pipeline-stage-view \
     workflow-aggregator \
-    git
+    git \
+    configuration-as-code
 
 # Switch back to the Jenkins user
 USER jenkins
