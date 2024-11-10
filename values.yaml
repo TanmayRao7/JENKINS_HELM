@@ -37,10 +37,10 @@ controller:
     registry: "docker.io"
     # -- Controller image repository
     # repository: "parag47/test_jenkins"
-    repository: "jenkins/jenkins"
+    repository: "tanmayrao7"
 
     # -- Controller image tag override; i.e., tag: "2.440.1-jdk17"
-    tag: "jdk17"
+    tag: "latest"
 
     # -- Controller image tag label
     #tagLabel: jdk17
