@@ -1,4 +1,4 @@
-def jobName = ['NGINX-1','NGINX-2','NGINX-3']
+def jobName = ['NGINX-1']
 
 for (name in jobName) {
     pipelineJob(name) {
@@ -15,6 +15,11 @@ for (name in jobName) {
                 }
                 scriptPath('Jenkinsfile')
             }
+        }
+        parameters {
+            choiceParam('ENV', ['dev', 'test', 'stage', 'prod'], 'Choose the deployment environment')
+            stringParam('IMAGE_TAG', '', 'Specify the image tag')
+            stringParam('CUSTOM_TEXT', '', 'Custom text for configuration')
         }
     }
 }
