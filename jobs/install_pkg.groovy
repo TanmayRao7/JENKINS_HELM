@@ -1,4 +1,5 @@
-pipelineJob('Install Argocd')  {
+def jobName = ['Install Argocd']
+pipelineJob(jobName)  {
     agent any
 
     environment {
