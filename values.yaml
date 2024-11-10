@@ -265,7 +265,7 @@ controller:
       # -- Set the time interval between two startup probes executions in seconds
       periodSeconds: 10
       # -- Set the timeout for the startup probe in seconds
-      timeoutSeconds: 5
+      timeoutSeconds: 25
 
     livenessProbe:
       # -- Set the failure threshold for the liveness probe
@@ -278,7 +278,7 @@ controller:
       # -- Set the time interval between two liveness probes executions in seconds
       periodSeconds: 10
       # -- Set the timeout for the liveness probe in seconds
-      timeoutSeconds: 5
+      timeoutSeconds: 25
 
       # If Startup Probe is not supported on your Kubernetes cluster, you might want to use "initialDelaySeconds" instead.
       # It delays the initial liveness probe while Jenkins is starting
@@ -520,11 +520,6 @@ controller:
     # - https://acme.org/jenkins.yaml
     # -- List of Jenkins Config as Code scripts
     configScripts:
-      pipeline-approval: |
-        unclassified:
-          approvals:
-            - approved: "true"
-            - scriptApproval: "*"
       seed-job: |
         jobs:
           - script: >
