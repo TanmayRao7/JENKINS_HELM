@@ -42,12 +42,32 @@ RUN curl -sSL -o /usr/local/bin/jenkins-cli.jar https://repo.jenkins-ci.org/publ
 
 # Install Jenkins Plugins
 RUN jenkins-plugin-cli --plugins \
-    credentials \
     kubernetes-cli \
     pipeline-stage-view \
-    workflow-aggregator \
+    job-dsl \
     git \
-    configuration-as-code
+    workflow-aggregator:2.6 \
+    blueocean \
+    job-dsl \
+    kubernetes \
+    workflow-aggregator \
+    configuration-as-code \
+    blueocean \
+    credentials \
+    workflow-scm-step \
+    junit \
+    git-client \
+    dependency-check-jenkins-plugin \
+    pipeline-utility-steps \
+    pipeline-stage-step \
+    nexus-artifact-uploader \
+    kubernetes-cli \
+    sonar \
+    performance \
+    monitoring \
+    email-ext \
+    allure-jenkins-plugin \
+    conditional-buildstep 
 
 # Switch back to the Jenkins user
 USER jenkins

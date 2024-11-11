@@ -5,4 +5,7 @@ yq -i  '.custom.homepageText = "Release Version:1.18" ' values.yaml
 
 kind get kubeconfig > /Users/tanmayrao/Downloads/kubeconfig-kind
 
-yq -i  '.clusters.[0].cluster.server = "https://kubernetes.default.svc.cluster.local" ' kubeconfig-kind
+yq -i  '.clusters.[0].cluster.server = "https://kubernetes.default.svc.cluster.local" ' /Users/tanmayrao/Downloads/kubeconfig-kind
+
+argocd-server
+https://argocd-server.argocd.svc.cluster.local
